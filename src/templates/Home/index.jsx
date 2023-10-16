@@ -24,15 +24,13 @@ export const Home = () => {
 
   const noMorePosts = page + postsPerPage >= allPosts.length;
 
-  const filteredPosts = !!searchValue ? 
-  allPosts.filter(post => {
-    return post.title.toLowerCase().includes(
-      searchValue.toLowerCase()
-    );
-  })
-  : posts;
+  const filteredPosts = searchValue
+    ? allPosts.filter((post) => {
+        return post.title.toLowerCase().includes(searchValue.toLowerCase());
+      })
+    : posts;
 
-  const handleLoadPosts = useCallback(async(page, postsPerPage) => {
+  const handleLoadPosts = useCallback(async (page, postsPerPage) => {
     const postsAndPhotos = await loadPosts();
 
     setPosts(postsAndPhotos.slice(page, postsPerPage));
@@ -47,50 +45,35 @@ export const Home = () => {
 
     setPosts(posts);
     setPage(nextPage);
-  }
+  };
 
   const handleChange = (e) => {
     const { value } = e.target;
     setSearchValue(value);
-  }
+  };
 
   useEffect(() => {
     handleLoadPosts(0, postsPerPage);
   }, [handleLoadPosts, postsPerPage]);
 
   return (
-    <section className='container'>
-      <div className='search-container'>
-        {!!searchValue && (
-          <h1>Search value: {searchValue}</h1>
-        )}
+    <section className="container">
+      <div className="search-container">
+        {!!searchValue && <h1>Search value: {searchValue}</h1>}
 
-        <TextInput 
-          searchValue={searchValue}
-          handleChange={handleChange}
-        />
+        <TextInput searchValue={searchValue} handleChange={handleChange} />
       </div>
-      
-      {filteredPosts.length > 0 && (
-        <Posts posts={filteredPosts} />
-      )}
 
-      {filteredPosts.length === 0 && (
-        <p>Não existe posts</p>
-      )}
+      {filteredPosts.length > 0 && <Posts posts={filteredPosts} />}
 
-      <div className='button-container'>
-        {!searchValue && (
-          <Button 
-            text="Load more posts"
-            onClick={loadMorePosts}
-            disabled={noMorePosts}
-          />
-        )}
+      {filteredPosts.length === 0 && <p>Não existe posts</p>}
+
+      <div className="button-container">
+        {!searchValue && <Button text="Load more posts" onClick={loadMorePosts} disabled={noMorePosts} />}
       </div>
     </section>
   );
-}
+};
 
 // class Home2 extends Component {
 
@@ -140,7 +123,7 @@ export const Home = () => {
 //       const { posts, page, postsPerPage, allPosts, searchValue } = this.state;
 //       const noMorePosts = page + postsPerPage >= allPosts.length;
 
-//       const filteredPosts = !!searchValue ? 
+//       const filteredPosts = !!searchValue ?
 //       allPosts.filter(post => {
 //         return post.title.toLowerCase().includes(
 //           searchValue.toLowerCase()
@@ -155,12 +138,12 @@ export const Home = () => {
 //               <h1>Search value: {searchValue}</h1>
 //             )}
 
-//             <TextInput 
+//             <TextInput
 //               searchValue={searchValue}
 //               handleChange={this.handleChange}
 //             />
 //           </div>
-          
+
 //           {filteredPosts.length > 0 && (
 //             <Posts posts={filteredPosts} />
 //           )}
@@ -171,7 +154,7 @@ export const Home = () => {
 
 //           <div className='button-container'>
 //             {!searchValue && (
-//               <Button 
+//               <Button
 //                 text="Load more posts"
 //                 onClick={this.loadMorePosts}
 //                 disabled={noMorePosts}
